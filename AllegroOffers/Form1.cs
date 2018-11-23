@@ -13,41 +13,46 @@ namespace AllegroOffers
 {
     public partial class Form1 :Form
     {
+        AllegroRest rest;
+
         public Form1()
         {
             //http://www.altcontroldelete.pl/artykuly/c-wpf-oraz-sqlite-razem-w-jednym-projekcie/
 
 
             InitializeComponent();
-            //service = new AllegroWebApi();// inicjalizacja obiektu service
-            //service.GetItems();
             listBoxDB.BindingContext = BindingContext;
             DBMethods db = new DBMethods();
-            listBoxDB.DataSource = db.InitBinding();
+            if(db.CheckDBExists())
+            {
 
-            string response = null;
+            }
+            
+
+            listBoxDB.DataSource = db.InitBinding();
+            
+        }
+
+        private void btnSearchRequest_Click(object sender, EventArgs e)
+        {
+            SearchItem();
+        }
+
+        private void SearchItem()
+        {
             try
             {
-                AllegroRest rest = new AllegroRest();
-                //var a = rest.GetAccessToken();
-                //var z = rest.GetTokenK();
+                rest = new AllegroRest();
                 var x = rest.GetTokenJ().Result;
                 //MessageBox.Show(String.Format("Access Token: {0}", rest.accessToken));
 
-                //System.Threading.Thread.Sleep(5000);
-                var z = rest.makeRequest();
-                //JSONObject flight = Newtonsoft.Json.JsonConvert.DeserializeObject<JSONObject>(response);
-                //JSONObject deserializedProduct = JsonConvert.DeserializeObject<JSONObject>(response);
-
-
-
+                AllegroOffers.Rootobject searchResponse = rest.requestSearchItem(textBoxKey.Text);
+                searchResponse.categories.ToString();
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(ex.Message);
             }
         }
-
-        
     }
 }

@@ -119,10 +119,12 @@ namespace AllegroOffers
             }
         }
 
-        private const string url = "https://api.allegro.pl/offers/listing?phrase=galaxy+s7+gwarancja+clear";
+        //private const string url = "https://api.allegro.pl/offers/listing?phrase=galaxy+s7+gwarancja+clear";
 
-        public AllegroOffers.Rootobject makeRequest()
+        public AllegroOffers.Rootobject requestSearchItem(string ItemName)
         {
+            string url = $"https://api.allegro.pl/offers/listing?phrase={ItemName}+clear";
+
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
             request.AddHeader("Accept", "application/vnd.allegro.public.v1+json");

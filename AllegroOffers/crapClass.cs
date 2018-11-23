@@ -9,24 +9,26 @@ namespace AllegroOffers
 {
     class crapClass
     {
+        /*
+       
         static string clientSecret = "S6qc1CP0EkMKRTZptn25UPACm33cPoEoTVSJMUvhi0lBjioTRZ3CnrITgvS4M6PM";
         public static string clientId = "aed37b6ec66e41cfab5c2ce667cba86b";
 
         public static string Authorization()
         {
-            //System.Diagnostics.Process.Start(
-            string url = "https://allegro.pl/auth/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=http://localhost:8000";
-            System.Diagnostics.Process.Start(url);
-            /*var request = (HttpWebRequest)HttpWebRequest.Create(url);
-            request.Method = "GET";
-            request.AllowAutoRedirect = false;
-            request.ContentType = "application/x-www-form-urlencoded";
-            using(HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                var location = response.GetResponseHeader("Location");
-                return response.ToString();
-            }
-            */
+            ////System.Diagnostics.Process.Start(
+            //string url = "https://allegro.pl/auth/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=http://localhost:8000";
+            //System.Diagnostics.Process.Start(url);
+            ///*var request = (HttpWebRequest)HttpWebRequest.Create(url);
+            //request.Method = "GET";
+            //request.AllowAutoRedirect = false;
+            //request.ContentType = "application/x-www-form-urlencoded";
+            //using(HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            //{
+            //    var location = response.GetResponseHeader("Location");
+            //    return response.ToString();
+            //}
+            
             return "";
         }
 
@@ -71,5 +73,6 @@ namespace AllegroOffers
             request.AddHeader("Authorization", $"Basic {clientId}:{clientSecret}");
             return client.Execute(request).Content; //the Content (body) of the response
         }
+    */
     }
 }

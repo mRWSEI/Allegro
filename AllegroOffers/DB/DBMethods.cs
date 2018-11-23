@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Data.SQLite.Linq;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,40 +22,90 @@ namespace AllegroOffers
         private DataTable m_oDataTable = null;
         private SQLiteConnection m_dbConnection;
 
-        public DataView InitBinding()
+
+        /// <summary>
+        /// Sprawdza czy istnieje plik z bazą danych jeśli nie to wywołuje CreateDB
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckDBExists()
         {
-            SQLiteConnection oSQLiteConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName}");
-            SQLiteCommand oCommand = oSQLiteConnection.CreateCommand();
-            oCommand.CommandText = "SELECT * FROM AllegroOffers";
-            m_oDataAdapter = new SQLiteDataAdapter(oCommand.CommandText,oSQLiteConnection);
-            SQLiteCommandBuilder oCommandBuilder = new SQLiteCommandBuilder(m_oDataAdapter);
-            m_oDataSet = new DataSet();
-            m_oDataAdapter.Fill(m_oDataSet);
-            m_oDataTable = m_oDataSet.Tables[0];
-            return  m_oDataTable.DefaultView;
+            if(File.Exists($"{Definitions.dbFileName}"))
+            { return true; }
+            else
+            {
+                try
+                {
+                    if(CreateDB())
+                        return true;
+                    else
+                        return false;
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception($"Baza nie istnieje. Nie udało się utworzyć nowej {ex.Message}");
+                }
+            }
         }
 
-        /*
-        public void CreateDB()
+        public DataView InitBinding()
         {
-            SQLiteConnection.CreateFile(Definitions.dbFileName);
+                SQLiteConnection oSQLiteConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName}");
+                SQLiteCommand oCommand = oSQLiteConnection.CreateCommand();
+                oCommand.CommandText = "SELECT * FROM AllegroOffers";
+                m_oDataAdapter = new SQLiteDataAdapter(oCommand.CommandText, oSQLiteConnection);
+                SQLiteCommandBuilder oCommandBuilder = new SQLiteCommandBuilder(m_oDataAdapter);
+                m_oDataSet = new DataSet();
+            if(m_oDataSet.Tables.Count >0)
+            {
+                m_oDataAdapter.Fill(m_oDataSet);
+                m_oDataTable = m_oDataSet.Tables[0];
+                
+            }
+            else
+            {
+                throw new Exception("brak danych w tabeli");
+            }
+            return m_oDataTable.DefaultView;
+        }
 
-            SQLiteConnection m_dbConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName};Version=3;");
-            m_dbConnection.Open();
+        /// <summary>
+        /// Tworzy plik sqlite z bazą danych oraz tabele
+        /// </summary>
+        /// <returns></returns>
+        public bool CreateDB()
+        {
+            try
+            {
+                SQLiteConnection.CreateFile(Definitions.dbFileName);
 
-            string sql = 
-@"create table AllegroOffers 
-(
-Id int identity(1,1) PRIMARY KEY,
-AllegroOfferId int,
-AllegroOfferName varchar(200),
-AllegroSellerName varchar(200),
-AllegroSellerId varchar(200),
-AllegroCategoryId int,
-AllegroOfferPrice decimal(18,2),
-Insert_Date Datetime DEFAULT CURRENT_TIMESTAMP
-)";
-*/
+                SQLiteConnection m_dbConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName};Version=3;");
+                m_dbConnection.Open();
+
+                string sql =
+                @"CREATE TABLE IF NOT EXISTS AllegroOffers 
+                (
+                Id int identity(1,1) PRIMARY KEY,
+                AllegroOfferId int,
+                AllegroOfferName varchar(200),
+                AllegroSellerName varchar(200),
+                AllegroSellerId varchar(200),
+                AllegroCategoryId int,
+                AllegroOfferPrice decimal(18,2),
+                Insert_Date Datetime DEFAULT CURRENT_TIMESTAMP
+                )";
+
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                //command.ExecuteNonQuery();
+
+                m_dbConnection.Close();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Błąd: CreateDB nie udało się utworzyć bazy danych. {ex.Message}");
+            }
+            return true;
+        }
+
 
  /*           
          INSERT INTO AllegroOffers
@@ -67,10 +118,7 @@ VALUES
 '2018-11-13 21:02:00')
  */
  /*
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            //command.ExecuteNonQuery();
-
-            m_dbConnection.Close();
+            
         }
         */
 
