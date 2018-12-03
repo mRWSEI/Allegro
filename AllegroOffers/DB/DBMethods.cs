@@ -22,14 +22,34 @@ namespace AllegroOffers
         private DataTable m_oDataTable = null;
         private SQLiteConnection m_dbConnection;
 
+        private string dbPath = Definitions.dbPATH + Definitions.dbFileName;
 
+
+        /// <summary>
+        /// Metoda tworząca komunikat błędu
+        /// </summary>
+        /// <param name="Ex"></param>
+        /// <param name="Komunikat"></param>
+        /// <returns></returns>
+        public string ErrorMessages(Exception Ex, string Komunikat)
+        {
+            string errorMSG = null;
+
+            System.Diagnostics.StackFrame stackFrame = new System.Diagnostics.StackFrame(1);
+            var methodName = stackFrame.GetMethod().Name;
+            errorMSG = $"Błąd {methodName}: {Komunikat} - {Ex.Message}";
+            return errorMSG;
+        }
+
+
+        #region Obsluga pliku sqlite i jego struktury
         /// <summary>
         /// Sprawdza czy istnieje plik z bazą danych jeśli nie to wywołuje CreateDB
         /// </summary>
         /// <returns></returns>
         public bool CheckDBExists()
         {
-            if(File.Exists($"{Definitions.dbFileName}"))
+            if(File.Exists($"{dbPath}"))
             { return true; }
             else
             {
@@ -38,34 +58,13 @@ namespace AllegroOffers
                     if(CreateDB())
                         return true;
                     else
-                        return false;
+                        throw new Exception();
                 }
                 catch(Exception ex)
                 {
-                    throw new Exception($"Baza nie istnieje. Nie udało się utworzyć nowej {ex.Message}");
+                    throw new Exception(ErrorMessages(ex, "Baza nie istnieje lub nie udało się utworzyć nowej"));
                 }
             }
-        }
-
-        public DataView InitBinding()
-        {
-                SQLiteConnection oSQLiteConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName}");
-                SQLiteCommand oCommand = oSQLiteConnection.CreateCommand();
-                oCommand.CommandText = "SELECT * FROM AllegroOffers";
-                m_oDataAdapter = new SQLiteDataAdapter(oCommand.CommandText, oSQLiteConnection);
-                SQLiteCommandBuilder oCommandBuilder = new SQLiteCommandBuilder(m_oDataAdapter);
-                m_oDataSet = new DataSet();
-            if(m_oDataSet.Tables.Count >0)
-            {
-                m_oDataAdapter.Fill(m_oDataSet);
-                m_oDataTable = m_oDataSet.Tables[0];
-                
-            }
-            else
-            {
-                throw new Exception("brak danych w tabeli");
-            }
-            return m_oDataTable.DefaultView;
         }
 
         /// <summary>
@@ -76,51 +75,103 @@ namespace AllegroOffers
         {
             try
             {
-                SQLiteConnection.CreateFile(Definitions.dbFileName);
+                if(!File.Exists(dbPath))
+                {
+                    SQLiteConnection.CreateFile(Definitions.dbFileName);
+                }
 
-                SQLiteConnection m_dbConnection = new SQLiteConnection($"Data Source={Definitions.dbFileName};Version=3;");
-                m_dbConnection.Open();
-
-                string sql =
-                @"CREATE TABLE IF NOT EXISTS AllegroOffers 
-                (
-                Id int identity(1,1) PRIMARY KEY,
-                AllegroOfferId int,
-                AllegroOfferName varchar(200),
-                AllegroSellerName varchar(200),
-                AllegroSellerId varchar(200),
-                AllegroCategoryId int,
-                AllegroOfferPrice decimal(18,2),
-                Insert_Date Datetime DEFAULT CURRENT_TIMESTAMP
-                )";
-
-                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-                //command.ExecuteNonQuery();
-
-                m_dbConnection.Close();
+                if(!CreateDBTable(dbPath))
+                    return false;
             }
             catch(Exception ex)
             {
-                throw new Exception($"Błąd: CreateDB nie udało się utworzyć bazy danych. {ex.Message}");
+                throw new Exception(ErrorMessages(ex, "Nie udało się utworzyć bazy danych"));
             }
             return true;
         }
 
+        /// <summary>
+        /// Tworzy tabelę allegroOffers jeśli nie istnieje w pliku sqlite
+        /// </summary>
+        /// <param name="dbPath"></param>
+        /// <returns></returns>
+        private bool CreateDBTable(string dbPath)
+        {
+            try
+            {
+                using(SQLiteConnection m_dbConnection = new SQLiteConnection($"Data Source={dbPath};Version=3;"))
+                {
+                    m_dbConnection.Open();
 
- /*           
-         INSERT INTO AllegroOffers
-(AllegroOfferId, AllegroOfferName, AllegroSellerName,
-AllegroSellerId, AllegroCategoryId, AllegroOfferPrice,
-InsertDate)
-VALUES
-(233, 'Galaxy S7 Gwarancja', 'SmartTel',
-74321, 12, 720, 
-'2018-11-13 21:02:00')
- */
- /*
-            
+                    string sql =
+                    @"CREATE TABLE IF NOT EXISTS AllegroOffers 
+                    (
+                    Id int identity(1,1) PRIMARY KEY,
+                    AllegroOfferId int,
+                    AllegroOfferName varchar(200),
+                    AllegroSellerName varchar(200),
+                    AllegroSellerId varchar(200),
+                    AllegroCategoryId int,
+                    AllegroOfferPrice decimal(18,2),
+                    Insert_Date Datetime DEFAULT CURRENT_TIMESTAMP
+                    )";
+
+                    SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                    
+                    var count = command.ExecuteNonQuery();
+
+
+                    m_dbConnection.Close();
+                }
+            }
+            catch(SQLiteException exSql)
+            {
+                throw new Exception(ErrorMessages(exSql, "Zapytanie SQL zwróciło błąd"));
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ErrorMessages(ex, "Inny błąd"));
+            }
+            return true;
         }
-        */
+        #endregion
+
+        public DataSet InitBinding()
+        {
+            DataTable dt = new DataTable();
+            DataSet m_oDataSet = new DataSet();
+            try
+            {
+                using(SQLiteConnection oSQLiteConnection = new SQLiteConnection($"Data Source={dbPath}"))
+                {
+                    oSQLiteConnection.Open();
+
+                    string sql = "SELECT * FROM AllegroOffers";
+                    using(SQLiteCommand oCommand = new SQLiteCommand(sql, oSQLiteConnection))
+                    {
+                        using(SQLiteDataAdapter m_oDataAdapter = new SQLiteDataAdapter(oCommand))
+                        {
+                            m_oDataAdapter.Fill(m_oDataSet);
+                        }
+
+
+                        if(m_oDataSet.Tables.Count > 0)
+                        {
+                            //m_oDataAdapter.Fill(m_oDataSet);
+                            //m_oDataTable = m_oDataSet.Tables[0];
+                            return m_oDataSet;
+                        }
+                        else
+                            return null;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ErrorMessages(ex, "Błąd podczas pobierania danych z bazy"));
+            }
+            //return m_oDataTable.DefaultView;
+        }
 
         public void OpenDB()
         {
@@ -147,6 +198,16 @@ VALUES
 
         public void InsertData()
         {
+            /*           
+                INSERT INTO AllegroOffers
+       (AllegroOfferId, AllegroOfferName, AllegroSellerName,
+       AllegroSellerId, AllegroCategoryId, AllegroOfferPrice,
+       InsertDate)
+       VALUES
+       (233, 'Galaxy S7 Gwarancja', 'SmartTel',
+       74321, 12, 720, 
+       '2018-11-13 21:02:00')
+        */
             string sql = "insert into highscores (name, score) values ('Me', 9001)";
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);

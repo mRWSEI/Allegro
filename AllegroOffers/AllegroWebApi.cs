@@ -20,15 +20,29 @@ namespace AllegroOffers
     //https://gist.github.com/lqdev/5e82a5c856fcf0818e0b5e002deb0c28
     public partial class AllegroRest
     {
-        private string clientSecret;
-        private string clientId;
-        public string accessToken;
+        private string clientSecret = "S6qc1CP0EkMKRTZptn25UPACm33cPoEoTVSJMUvhi0lBjioTRZ3CnrITgvS4M6PM";
+        private string clientId = "aed37b6ec66e41cfab5c2ce667cba86b";
+        public string accessToken = "";
+
+        private decimal priceFrom;
+        public decimal PriceFrom => priceFrom;
+
+        private decimal priceTo;
+        public decimal PriceTo => priceFrom;
+
+        private string city;
+        public string City => city;
 
         public AllegroRest()
         {
-            clientSecret = "S6qc1CP0EkMKRTZptn25UPACm33cPoEoTVSJMUvhi0lBjioTRZ3CnrITgvS4M6PM";
-            clientId = clientId = "aed37b6ec66e41cfab5c2ce667cba86b";
-            accessToken = "";
+            // konstruktor
+        }
+
+        public void SetValues(decimal PriFrom, decimal PriTo, string Cty)
+        {
+            priceFrom = PriFrom;
+            priceTo = PriTo;
+            city = Cty;
         }
 
         class AccessToken
@@ -41,6 +55,13 @@ namespace AllegroOffers
         public async Task<string> GetTokenJ()
         {
             string credentials = String.Format("{0}:{1}", clientId, clientSecret);
+
+            // ze względu na zmiany w API powodujące błąd "The request was aborted: Could not create SSL/TLS secure channel."
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
 
             using(var client = new HttpClient())
             {
@@ -68,6 +89,12 @@ namespace AllegroOffers
    
         public string GetTokenK()
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
+
             RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
             var client = new RestClient("https://allegro.pl/auth/oauth/token");
             var request = new RestRequest(Method.POST);
@@ -120,7 +147,6 @@ namespace AllegroOffers
         }
 
         //private const string url = "https://api.allegro.pl/offers/listing?phrase=galaxy+s7+gwarancja+clear";
-
         public AllegroOffers.Rootobject requestSearchItem(string ItemName)
         {
             string url = $"https://api.allegro.pl/offers/listing?phrase={ItemName}+clear";
@@ -132,11 +158,7 @@ namespace AllegroOffers
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             
             var response = client.Execute(request).Content; //the Content (body) of the response
-            return JsonConvert.DeserializeObject<Rootobject>(response);
-            
-
+            return JsonConvert.DeserializeObject<Rootobject>(response); 
         }
-
-
     }
 }

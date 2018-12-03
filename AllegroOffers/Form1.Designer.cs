@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.btnSearchRequest = new System.Windows.Forms.Button();
-            this.textBoxKey = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxProductName = new System.Windows.Forms.TextBox();
             this.listBoxAuctions = new System.Windows.Forms.ListBox();
-            this.listBoxDB = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dataGridViewDB = new System.Windows.Forms.DataGridView();
+            this.textBoxPriceFrom = new System.Windows.Forms.TextBox();
+            this.textBoxPriceTo = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDB)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSearchRequest
             // 
-            this.btnSearchRequest.Location = new System.Drawing.Point(527, 82);
+            this.btnSearchRequest.Location = new System.Drawing.Point(527, 208);
             this.btnSearchRequest.Name = "btnSearchRequest";
             this.btnSearchRequest.Size = new System.Drawing.Size(75, 23);
             this.btnSearchRequest.TabIndex = 0;
@@ -46,19 +48,12 @@
             this.btnSearchRequest.UseVisualStyleBackColor = true;
             this.btnSearchRequest.Click += new System.EventHandler(this.btnSearchRequest_Click);
             // 
-            // textBoxKey
+            // textBoxProductName
             // 
-            this.textBoxKey.Location = new System.Drawing.Point(627, 16);
-            this.textBoxKey.Name = "textBoxKey";
-            this.textBoxKey.Size = new System.Drawing.Size(100, 20);
-            this.textBoxKey.TabIndex = 1;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(627, 42);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 2;
+            this.textBoxProductName.Location = new System.Drawing.Point(627, 19);
+            this.textBoxProductName.Name = "textBoxProductName";
+            this.textBoxProductName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxProductName.TabIndex = 2;
             // 
             // listBoxAuctions
             // 
@@ -67,14 +62,6 @@
             this.listBoxAuctions.Name = "listBoxAuctions";
             this.listBoxAuctions.Size = new System.Drawing.Size(506, 160);
             this.listBoxAuctions.TabIndex = 3;
-            // 
-            // listBoxDB
-            // 
-            this.listBoxDB.FormattingEnabled = true;
-            this.listBoxDB.Location = new System.Drawing.Point(12, 178);
-            this.listBoxDB.Name = "listBoxDB";
-            this.listBoxDB.Size = new System.Drawing.Size(506, 186);
-            this.listBoxDB.TabIndex = 4;
             // 
             // label1
             // 
@@ -85,19 +72,48 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Nazwa przedmiotu:";
             // 
+            // dataGridViewDB
+            // 
+            this.dataGridViewDB.AllowUserToAddRows = false;
+            this.dataGridViewDB.AllowUserToDeleteRows = false;
+            this.dataGridViewDB.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDB.Location = new System.Drawing.Point(12, 178);
+            this.dataGridViewDB.Name = "dataGridViewDB";
+            this.dataGridViewDB.ReadOnly = true;
+            this.dataGridViewDB.Size = new System.Drawing.Size(506, 247);
+            this.dataGridViewDB.TabIndex = 6;
+            // 
+            // textBoxPriceFrom
+            // 
+            this.textBoxPriceFrom.Location = new System.Drawing.Point(527, 66);
+            this.textBoxPriceFrom.Name = "textBoxPriceFrom";
+            this.textBoxPriceFrom.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPriceFrom.TabIndex = 7;
+            this.textBoxPriceFrom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
+            // 
+            // textBoxPriceTo
+            // 
+            this.textBoxPriceTo.Location = new System.Drawing.Point(634, 66);
+            this.textBoxPriceTo.Name = "textBoxPriceTo";
+            this.textBoxPriceTo.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPriceTo.TabIndex = 8;
+            this.textBoxPriceTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBoxPriceTo);
+            this.Controls.Add(this.textBoxPriceFrom);
+            this.Controls.Add(this.dataGridViewDB);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listBoxDB);
             this.Controls.Add(this.listBoxAuctions);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBoxKey);
+            this.Controls.Add(this.textBoxProductName);
             this.Controls.Add(this.btnSearchRequest);
             this.Name = "Form1";
             this.Text = "RSS Feed aukcje Allegro";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -106,11 +122,12 @@
         #endregion
 
         private System.Windows.Forms.Button btnSearchRequest;
-        private System.Windows.Forms.TextBox textBoxKey;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxProductName;
         private System.Windows.Forms.ListBox listBoxAuctions;
-        private System.Windows.Forms.ListBox listBoxDB;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dataGridViewDB;
+        private System.Windows.Forms.TextBox textBoxPriceFrom;
+        private System.Windows.Forms.TextBox textBoxPriceTo;
     }
 }
 

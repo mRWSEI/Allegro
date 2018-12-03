@@ -21,16 +21,18 @@ namespace AllegroOffers
 
 
             InitializeComponent();
-            listBoxDB.BindingContext = BindingContext;
+
             DBMethods db = new DBMethods();
-            if(db.CheckDBExists())
+            if(!db.CheckDBExists())
             {
-
+                throw new Exception("Błąd podłączenia bazy danych");
             }
-            
 
-            listBoxDB.DataSource = db.InitBinding();
-            
+            // inicjalizacja grida
+            dataGridViewDB.AutoGenerateColumns = true;
+            dataGridViewDB.DataSource = db.InitBinding();
+            dataGridViewDB.DataMember = "Table";
+
         }
 
         private void btnSearchRequest_Click(object sender, EventArgs e)
@@ -38,21 +40,29 @@ namespace AllegroOffers
             SearchItem();
         }
 
-        private void SearchItem()
+        #region Events
+        /// <summary>
+        /// Pozwala wprowadzać jedynie liczby i kropki do pól z ceną
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBoxPrice_KeyPress(object sender, KeyPressEventArgs e)
         {
-            try
+            if(!char.IsControl(e.KeyChar)
+                && !char.IsDigit(e.KeyChar)
+                && e.KeyChar != '.')
             {
-                rest = new AllegroRest();
-                var x = rest.GetTokenJ().Result;
-                //MessageBox.Show(String.Format("Access Token: {0}", rest.accessToken));
-
-                AllegroOffers.Rootobject searchResponse = rest.requestSearchItem(textBoxKey.Text);
-                searchResponse.categories.ToString();
+                e.Handled = true;
             }
-            catch(Exception ex)
+
+            // only allow one decimal point
+            if(e.KeyChar == '.'
+                && (sender as TextBox).Text.IndexOf('.') > -1)
             {
-                MessageBox.Show(ex.Message);
+                e.Handled = true;
             }
         }
+
+        #endregion
     }
 }
