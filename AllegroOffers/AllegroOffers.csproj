@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllegroItem.cs" />
     <Compile Include="AllegroWebApi.cs" />
     <Compile Include="CommonMethods.cs">
       <SubType>Form</SubType>

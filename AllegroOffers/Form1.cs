@@ -15,12 +15,34 @@ namespace AllegroOffers
     {
         AllegroRest rest;
 
+        BindingList<AllegroItem> allegroItems = new BindingList<AllegroItem>();
+
+        DataTable dt;
+
         public Form1()
         {
             //http://www.altcontroldelete.pl/artykuly/c-wpf-oraz-sqlite-razem-w-jednym-projekcie/
 
 
+          
+
             InitializeComponent();
+            /*
+            dataGridViewAllegro.AutoGenerateColumns = true;
+            dataGridViewAllegro.AutoSize = true;
+
+            DataGridViewColumn column = new DataGridViewTextBoxColumn();
+            column.DataPropertyName = "Name";
+            column.Name = "Knight";
+            dataGridViewAllegro.Columns.Add(column);
+
+            DataGridViewCheckBoxColumn c = new DataGridViewCheckBoxColumn();
+            c.Name = "Selected";
+            dataGridViewAllegro.Columns.Add(c);
+            */
+            dataGridViewAllegro.DataSource = allegroItems;
+
+
 
             DBMethods db = new DBMethods();
             if(!db.CheckDBExists())
@@ -38,6 +60,30 @@ namespace AllegroOffers
         private void btnSearchRequest_Click(object sender, EventArgs e)
         {
             SearchItem();
+            //check null
+            //dataGridViewAllegro.DataSource = allegroItems;
+            //var bindingList = new BindingList<AllegroItem>(allegroItems);
+            //var source = new BindingSource(bindingList, null);
+
+            //dataGridViewAllegro.DataSource = null;
+            //dataGridViewAllegro.Columns.Clear();
+
+            //DataGridTextBoxColumn csName = new DataGridTextBoxColumn();
+            //csName.HeaderText = "naglowek";
+            //csName.Cell
+            /*
+            DataGridViewTextBoxColumn csRandom = new DataGridViewTextBoxColumn();
+                          
+            csRandom.DataPropertyName = "productId";  // Public property name (as defined in the object)
+            csRandom.HeaderText = "Random Number";      // Header name
+            csRandom.DefaultCellStyle.Format = "#.#000";    // Format 
+            dataGridViewAllegro.Columns.Add(csRandom);
+
+            //dataGridViewAllegro.DataSource = allegroItems.ToArray();
+            */
+            dataGridViewAllegro.DataSource = dt;
+
+            dataGridViewAllegro.Refresh(); 
         }
 
         #region Events

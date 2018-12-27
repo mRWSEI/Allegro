@@ -30,12 +30,13 @@
         {
             this.btnSearchRequest = new System.Windows.Forms.Button();
             this.textBoxProductName = new System.Windows.Forms.TextBox();
-            this.listBoxAuctions = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridViewDB = new System.Windows.Forms.DataGridView();
             this.textBoxPriceFrom = new System.Windows.Forms.TextBox();
             this.textBoxPriceTo = new System.Windows.Forms.TextBox();
+            this.dataGridViewAllegro = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllegro)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSearchRequest
@@ -54,14 +55,6 @@
             this.textBoxProductName.Name = "textBoxProductName";
             this.textBoxProductName.Size = new System.Drawing.Size(100, 20);
             this.textBoxProductName.TabIndex = 2;
-            // 
-            // listBoxAuctions
-            // 
-            this.listBoxAuctions.FormattingEnabled = true;
-            this.listBoxAuctions.Location = new System.Drawing.Point(12, 12);
-            this.listBoxAuctions.Name = "listBoxAuctions";
-            this.listBoxAuctions.Size = new System.Drawing.Size(506, 160);
-            this.listBoxAuctions.TabIndex = 3;
             // 
             // label1
             // 
@@ -99,21 +92,30 @@
             this.textBoxPriceTo.TabIndex = 8;
             this.textBoxPriceTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
             // 
+            // dataGridViewAllegro
+            // 
+            this.dataGridViewAllegro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAllegro.Location = new System.Drawing.Point(12, 19);
+            this.dataGridViewAllegro.Name = "dataGridViewAllegro";
+            this.dataGridViewAllegro.Size = new System.Drawing.Size(506, 143);
+            this.dataGridViewAllegro.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dataGridViewAllegro);
             this.Controls.Add(this.textBoxPriceTo);
             this.Controls.Add(this.textBoxPriceFrom);
             this.Controls.Add(this.dataGridViewDB);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listBoxAuctions);
             this.Controls.Add(this.textBoxProductName);
             this.Controls.Add(this.btnSearchRequest);
             this.Name = "Form1";
             this.Text = "RSS Feed aukcje Allegro";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllegro)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,11 +125,11 @@
 
         private System.Windows.Forms.Button btnSearchRequest;
         private System.Windows.Forms.TextBox textBoxProductName;
-        private System.Windows.Forms.ListBox listBoxAuctions;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridViewDB;
         private System.Windows.Forms.TextBox textBoxPriceFrom;
         private System.Windows.Forms.TextBox textBoxPriceTo;
+        private System.Windows.Forms.DataGridView dataGridViewAllegro;
     }
 }
 
