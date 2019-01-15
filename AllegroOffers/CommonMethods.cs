@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,39 +24,43 @@ namespace AllegroOffers
 
                 AllegroOffers.Rootobject searchResponse = rest.requestSearchItem(textBoxProductName.Text);
                 GetItemsCollection(searchResponse);
-                searchResponse.categories.ToString();
+                //searchResponse.categories.ToString();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                //return null;
             }
         }
 
         private void GetItemsCollection(Rootobject ItemsClass)
         {
+            allegroItems.Clear();
             var items = ItemsClass.items.regular;
             foreach (var item in items)
             {
                 AllegroItem itemObj = new AllegroItem();
-                itemObj.freeDelivery = Convert.ToBoolean(item.delivery.availableForFree);
-                itemObj.productId = Convert.ToInt64(item.id);
-                itemObj.itemName = item.name;
+                itemObj.FreeDelivery = Convert.ToBoolean(item.delivery.availableForFree);
+                itemObj.ProductId = Convert.ToInt64(item.id);
+                itemObj.ItemName = item.name;
 
                 //delivery
-                itemObj.freeDelivery = item.delivery.availableForFree;
-                itemObj.priceDelivery = Convert.ToDecimal(item.delivery.lowestPrice.amount.Replace(".",","));
+                itemObj.FreeDelivery = item.delivery.availableForFree;
+                itemObj.PriceDelivery = Convert.ToDecimal(item.delivery.lowestPrice.amount.Replace(".",","));
 
                 //seller
-                itemObj.company = item.seller.company;
-                itemObj.superSeller = item.seller.superSeller;
-                itemObj.sellerId = Convert.ToInt64(item.seller.id);
+                itemObj.Company = item.seller.company;
+                itemObj.SuperSeller = item.seller.superSeller;
+                itemObj.SellerId = Convert.ToInt64(item.seller.id);
 
-                itemObj.priceItem = Convert.ToDecimal(item.sellingMode.price.amount.Replace(".",","));
-                itemObj.stockQuantity = Convert.ToInt32(item.stock.available);
+                itemObj.PriceItem = Convert.ToDecimal(item.sellingMode.price.amount.Replace(".",","));
+                itemObj.StockQuantity = Convert.ToInt32(item.stock.available);
 
                 allegroItems.Add(itemObj);
-                dt = ConvertToDataTable(allegroItems);
             }
+            //return allegroItems;
+            dt = ConvertToDataTable(allegroItems); //dt
+            //DataTable dt2 = CreateDataTable<AllegroItem>(allegroItems);
         }
 
         public DataTable ConvertToDataTable<T>(IList<T> data)
@@ -73,7 +78,33 @@ namespace AllegroOffers
                 table.Rows.Add(row);
             }
             return table;
-
         }
+
+        /*
+        public static DataTable CreateDataTable<T>(IEnumerable<T> list)
+        {
+            Type type = typeof(T);
+            var properties = type.GetProperties();
+
+            DataTable dataTable = new DataTable();
+            foreach (PropertyInfo info in properties)
+            {
+                dataTable.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType));
+            }
+
+            foreach (T entity in list)
+            {
+                object[] values = new object[properties.Length];
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(entity);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }
+        */
     }
 }

@@ -35,13 +35,15 @@
             this.textBoxPriceFrom = new System.Windows.Forms.TextBox();
             this.textBoxPriceTo = new System.Windows.Forms.TextBox();
             this.dataGridViewAllegro = new System.Windows.Forms.DataGridView();
+            this.labelCenaOd = new System.Windows.Forms.Label();
+            this.labelCenaDo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllegro)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSearchRequest
             // 
-            this.btnSearchRequest.Location = new System.Drawing.Point(527, 208);
+            this.btnSearchRequest.Location = new System.Drawing.Point(713, 67);
             this.btnSearchRequest.Name = "btnSearchRequest";
             this.btnSearchRequest.Size = new System.Drawing.Size(75, 23);
             this.btnSearchRequest.TabIndex = 0;
@@ -51,9 +53,9 @@
             // 
             // textBoxProductName
             // 
-            this.textBoxProductName.Location = new System.Drawing.Point(627, 19);
+            this.textBoxProductName.Location = new System.Drawing.Point(627, 16);
             this.textBoxProductName.Name = "textBoxProductName";
-            this.textBoxProductName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxProductName.Size = new System.Drawing.Size(161, 20);
             this.textBoxProductName.TabIndex = 2;
             // 
             // label1
@@ -70,25 +72,25 @@
             this.dataGridViewDB.AllowUserToAddRows = false;
             this.dataGridViewDB.AllowUserToDeleteRows = false;
             this.dataGridViewDB.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewDB.Location = new System.Drawing.Point(12, 178);
+            this.dataGridViewDB.Location = new System.Drawing.Point(12, 196);
             this.dataGridViewDB.Name = "dataGridViewDB";
             this.dataGridViewDB.ReadOnly = true;
-            this.dataGridViewDB.Size = new System.Drawing.Size(506, 247);
+            this.dataGridViewDB.Size = new System.Drawing.Size(506, 229);
             this.dataGridViewDB.TabIndex = 6;
             // 
             // textBoxPriceFrom
             // 
-            this.textBoxPriceFrom.Location = new System.Drawing.Point(527, 66);
+            this.textBoxPriceFrom.Location = new System.Drawing.Point(592, 41);
             this.textBoxPriceFrom.Name = "textBoxPriceFrom";
-            this.textBoxPriceFrom.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPriceFrom.Size = new System.Drawing.Size(82, 20);
             this.textBoxPriceFrom.TabIndex = 7;
             this.textBoxPriceFrom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
             // 
             // textBoxPriceTo
             // 
-            this.textBoxPriceTo.Location = new System.Drawing.Point(634, 66);
+            this.textBoxPriceTo.Location = new System.Drawing.Point(708, 41);
             this.textBoxPriceTo.Name = "textBoxPriceTo";
-            this.textBoxPriceTo.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPriceTo.Size = new System.Drawing.Size(80, 20);
             this.textBoxPriceTo.TabIndex = 8;
             this.textBoxPriceTo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrice_KeyPress);
             // 
@@ -97,14 +99,34 @@
             this.dataGridViewAllegro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAllegro.Location = new System.Drawing.Point(12, 19);
             this.dataGridViewAllegro.Name = "dataGridViewAllegro";
-            this.dataGridViewAllegro.Size = new System.Drawing.Size(506, 143);
+            this.dataGridViewAllegro.Size = new System.Drawing.Size(506, 171);
             this.dataGridViewAllegro.TabIndex = 9;
+            // 
+            // labelCenaOd
+            // 
+            this.labelCenaOd.AutoSize = true;
+            this.labelCenaOd.Location = new System.Drawing.Point(535, 45);
+            this.labelCenaOd.Name = "labelCenaOd";
+            this.labelCenaOd.Size = new System.Drawing.Size(50, 13);
+            this.labelCenaOd.TabIndex = 10;
+            this.labelCenaOd.Text = "Cena od:";
+            // 
+            // labelCenaDo
+            // 
+            this.labelCenaDo.AutoSize = true;
+            this.labelCenaDo.Location = new System.Drawing.Point(680, 44);
+            this.labelCenaDo.Name = "labelCenaDo";
+            this.labelCenaDo.Size = new System.Drawing.Size(22, 13);
+            this.labelCenaDo.TabIndex = 11;
+            this.labelCenaDo.Text = "do:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.labelCenaDo);
+            this.Controls.Add(this.labelCenaOd);
             this.Controls.Add(this.dataGridViewAllegro);
             this.Controls.Add(this.textBoxPriceTo);
             this.Controls.Add(this.textBoxPriceFrom);
@@ -130,6 +152,8 @@
         private System.Windows.Forms.TextBox textBoxPriceFrom;
         private System.Windows.Forms.TextBox textBoxPriceTo;
         private System.Windows.Forms.DataGridView dataGridViewAllegro;
+        private System.Windows.Forms.Label labelCenaOd;
+        private System.Windows.Forms.Label labelCenaDo;
     }
 }
 

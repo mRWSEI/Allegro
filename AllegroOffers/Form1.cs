@@ -15,16 +15,13 @@ namespace AllegroOffers
     {
         AllegroRest rest;
 
-        BindingList<AllegroItem> allegroItems = new BindingList<AllegroItem>();
-
+        List<AllegroItem> allegroItems = new List<AllegroItem>();
         DataTable dt;
 
         public Form1()
         {
             //http://www.altcontroldelete.pl/artykuly/c-wpf-oraz-sqlite-razem-w-jednym-projekcie/
 
-
-          
 
             InitializeComponent();
             /*
@@ -40,6 +37,7 @@ namespace AllegroOffers
             c.Name = "Selected";
             dataGridViewAllegro.Columns.Add(c);
             */
+            dataGridViewAllegro.AutoGenerateColumns = true;
             dataGridViewAllegro.DataSource = allegroItems;
 
 
@@ -59,7 +57,11 @@ namespace AllegroOffers
 
         private void btnSearchRequest_Click(object sender, EventArgs e)
         {
+            //var result =  Task.Run(() => SearchItem());
+            //dataGridViewAllegro.DataSource = null;
             SearchItem();
+
+
             //check null
             //dataGridViewAllegro.DataSource = allegroItems;
             //var bindingList = new BindingList<AllegroItem>(allegroItems);
@@ -78,10 +80,11 @@ namespace AllegroOffers
             csRandom.HeaderText = "Random Number";      // Header name
             csRandom.DefaultCellStyle.Format = "#.#000";    // Format 
             dataGridViewAllegro.Columns.Add(csRandom);
-
-            //dataGridViewAllegro.DataSource = allegroItems.ToArray();
             */
-            dataGridViewAllegro.DataSource = dt;
+            //dataGridViewAllegro.DataSource = allegroItems.ToArray();
+            dataGridViewAllegro.Invoke(new Action(() => { dataGridViewAllegro.DataSource = dt; }));
+            //dataGridViewAllegro.DataSource = result;
+            //dataGridViewAllegro.DataSource = dt;
 
             dataGridViewAllegro.Refresh(); 
         }
