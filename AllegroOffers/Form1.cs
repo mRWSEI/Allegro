@@ -57,9 +57,9 @@ namespace AllegroOffers
 
         private void btnSearchRequest_Click(object sender, EventArgs e)
         {
-            //var result =  Task.Run(() => SearchItem());
             //dataGridViewAllegro.DataSource = null;
-            SearchItem();
+            Task T = Task.Run(() => SearchItem());
+            //SearchItem();
 
 
             //check null
@@ -82,11 +82,15 @@ namespace AllegroOffers
             dataGridViewAllegro.Columns.Add(csRandom);
             */
             //dataGridViewAllegro.DataSource = allegroItems.ToArray();
-            dataGridViewAllegro.Invoke(new Action(() => { dataGridViewAllegro.DataSource = dt; }));
+            //dataGridViewAllegro.Invoke(new Action(() => { dataGridViewAllegro.DataSource = dt; }));
             //dataGridViewAllegro.DataSource = result;
             //dataGridViewAllegro.DataSource = dt;
+            T.ContinueWith((t) =>
+            {
+                dataGridViewAllegro.DataSource = dt;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            dataGridViewAllegro.Refresh(); 
+            //dataGridViewAllegro.Refresh(); 
         }
 
         #region Events
