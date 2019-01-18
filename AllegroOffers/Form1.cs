@@ -24,19 +24,7 @@ namespace AllegroOffers
 
 
             InitializeComponent();
-            /*
-            dataGridViewAllegro.AutoGenerateColumns = true;
-            dataGridViewAllegro.AutoSize = true;
 
-            DataGridViewColumn column = new DataGridViewTextBoxColumn();
-            column.DataPropertyName = "Name";
-            column.Name = "Knight";
-            dataGridViewAllegro.Columns.Add(column);
-
-            DataGridViewCheckBoxColumn c = new DataGridViewCheckBoxColumn();
-            c.Name = "Selected";
-            dataGridViewAllegro.Columns.Add(c);
-            */
             dataGridViewAllegro.AutoGenerateColumns = true;
             dataGridViewAllegro.DataSource = allegroItems;
 
@@ -57,37 +45,14 @@ namespace AllegroOffers
 
         private void btnSearchRequest_Click(object sender, EventArgs e)
         {
-            //dataGridViewAllegro.DataSource = null;
+            btnSearchRequest.Enabled = false;
             Task T = Task.Run(() => SearchItem());
             //SearchItem();
 
-
-            //check null
-            //dataGridViewAllegro.DataSource = allegroItems;
-            //var bindingList = new BindingList<AllegroItem>(allegroItems);
-            //var source = new BindingSource(bindingList, null);
-
-            //dataGridViewAllegro.DataSource = null;
-            //dataGridViewAllegro.Columns.Clear();
-
-            //DataGridTextBoxColumn csName = new DataGridTextBoxColumn();
-            //csName.HeaderText = "naglowek";
-            //csName.Cell
-            /*
-            DataGridViewTextBoxColumn csRandom = new DataGridViewTextBoxColumn();
-                          
-            csRandom.DataPropertyName = "productId";  // Public property name (as defined in the object)
-            csRandom.HeaderText = "Random Number";      // Header name
-            csRandom.DefaultCellStyle.Format = "#.#000";    // Format 
-            dataGridViewAllegro.Columns.Add(csRandom);
-            */
-            //dataGridViewAllegro.DataSource = allegroItems.ToArray();
-            //dataGridViewAllegro.Invoke(new Action(() => { dataGridViewAllegro.DataSource = dt; }));
-            //dataGridViewAllegro.DataSource = result;
-            //dataGridViewAllegro.DataSource = dt;
             T.ContinueWith((t) =>
             {
                 dataGridViewAllegro.DataSource = dt;
+                btnSearchRequest.Enabled = true;
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             //dataGridViewAllegro.Refresh(); 

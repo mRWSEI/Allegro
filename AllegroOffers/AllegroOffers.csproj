@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllegroItem.cs" />
+    <Compile Include="ObjectsClass\AllegroItem.cs" />
     <Compile Include="AllegroWebApi.cs" />
     <Compile Include="CommonMethods.cs">
       <SubType>Form</SubType>
@@ -88,7 +88,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="crapClass.cs" />
     <Compile Include="DB\DBMethods.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Form1.cs">
@@ -97,7 +96,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="JSON\JSONSerializableClass.cs" />
+    <Compile Include="ObjectsClass\JSONSerializableClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
